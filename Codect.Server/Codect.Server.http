@@ -1,0 +1,6 @@
+@Codect.Server_HostAddress = http://localhost:5137
+
+GET {{Codect.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
