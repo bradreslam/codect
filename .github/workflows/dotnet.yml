@@ -13,6 +13,7 @@ on:
       - .gitignore
       - .devcontainer/*
   workflow_dispatch:
+
 jobs:
   build:
 
@@ -20,13 +21,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: List files for debugging
+      run: ls -R
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore
+
     - name: Test
       run: dotnet test CodectUnitTests/CodectUnitTests.csproj --no-build --verbosity normal
