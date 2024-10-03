@@ -1,6 +1,7 @@
-using BLL.Database;
 using Microsoft.EntityFrameworkCore;
 using DAL;
+using Interfaces;
+using BLL.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,9 @@ builder.Services.AddDbContext<CodectEfCoreDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("CodectEfCoreDbContext"));
 });
+
+builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
+builder.Services.AddScoped<IComponent, ComponentManager>();
 
 var app = builder.Build();
 

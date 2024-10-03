@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BLL.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Codect.Controllers
@@ -18,6 +19,12 @@ namespace Codect.Controllers
 				"Component4"
 			};
 			return Ok(components);
+		}
+
+		[HttpPost]
+		public Component Post()
+		{
+			return null;
 		}
 	}
 }

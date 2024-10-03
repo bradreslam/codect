@@ -2,7 +2,7 @@
 using Codect.Classes;
 using BLL.Models;
 
-namespace BLL.Database
+namespace DAL
 {
 	public class CodectEfCoreDbContext : DbContext
 	{
@@ -23,15 +23,6 @@ namespace BLL.Database
 						.Select(s => Enum.Parse<ContactPoint>(s))
 						.ToList()
 				);
-		}
-
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			if (!optionsBuilder.IsConfigured)  // Ensure options are not already set
-			{
-				// Add a default connection string for local development, this can be changed
-				optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=CodectDb;Trusted_Connection=True;");
-			}
 		}
 	}
 }
