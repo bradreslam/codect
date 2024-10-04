@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BLL.Exceptions;
 using Codect.Classes;
+using Interfaces;
 
 namespace BLL.Models
 {
@@ -11,8 +12,10 @@ namespace BLL.Models
 		public List<ContactPoint> ContactPoints { get; set; }
 		public FeatureType Feature { get; set; }
 
-		public Component(string name, List<ContactPoint> contactPoints, FeatureType feature)
+		public Component(string name, List<ContactPoint> contactPoints, FeatureType feature, IComponentRepository ComponentRepository)
 		{
+			IComponentRepository _componentRepository = ComponentRepository;
+
 			_ = name.Length switch
 			{
 				> 30 => throw new ComponentExceptions($"The name {name} is longer than 30 characters."),
@@ -20,6 +23,10 @@ namespace BLL.Models
 				_ => Name = name,
 			};
 
+			if (_componentRepository.NameExistsInDatabase(name))
+			{
+				throw new ComponentExceptions($"The name {name} already exists in the database");
+			}
 			if (contactPoints.Count != contactPoints.Distinct().Count())
 			{
 				throw new ComponentExceptions("The contact points can not contain the same value more than once.");
