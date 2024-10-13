@@ -1,5 +1,4 @@
 ﻿using Interfaces;
-using System.Data;
 using BLL.Exceptions;
 using BLL.Models;
 using Codect.Classes;
@@ -30,7 +29,7 @@ namespace BLL.Classes
 					contactPointsList.Add((ContactPoint)contactPoint);
 				}
 
-				Component component = new(name, contactPointsList, (FeatureType)feature, ComponentRepository);
+				Component component = new(name, contactPointsList, (FeatureType)feature);
 			}
 			catch(ComponentExceptions ex)
 			{

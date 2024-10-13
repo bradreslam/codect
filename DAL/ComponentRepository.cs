@@ -1,13 +1,12 @@
 ﻿using BLL.Models;
 using Interfaces;
-using System.Data;
 using Codect.Classes;
 using DTO;
 using Component = BLL.Models.Component;
 
 namespace DAL
 {
-	public class ComponentRepository(IComponentRepository ComponentRepository) : IComponentRepository
+	public class ComponentRepository() : IComponentRepository
 	{
 		private readonly CodectEfCoreDbContext _context;
 
@@ -71,7 +70,7 @@ namespace DAL
 				listContactPoints.Add((ContactPoint)contactPoint);
 			}
 			FeatureType featureType = (FeatureType)feature;
-			Component component = new(name, listContactPoints, featureType, ComponentRepository);
+			Component component = new(name, listContactPoints, featureType);
 			// Add the new student to the DbSet
 			_context.Components.Add(component);
 

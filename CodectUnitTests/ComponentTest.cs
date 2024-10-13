@@ -1,22 +1,12 @@
 using BLL.Exceptions;
 using BLL.Models;
 using Codect.Classes;
-using DTO;
-using Interfaces;
-using Moq;
 
 namespace CodectUnitTests
 {
 	[TestClass]
 	public class ComponentTest
 	{
-		private readonly Mock<IComponentRepository> _mockComponentRepository;
-
-		public ComponentTest()
-		{
-			_mockComponentRepository = new Mock<IComponentRepository>();
-		}
-
 		[TestMethod]
 		public void Constructor_trows_exception_when_name_is_longer_than_30_characters()
 		{
@@ -24,11 +14,10 @@ namespace CodectUnitTests
 			List<ContactPoint> contactPoints = new List<ContactPoint>();
 			contactPoints.Add(ContactPoint.N);
 			contactPoints.Add(ContactPoint.E);
-			_mockComponentRepository.Setup(g => g.NameExistsInDatabase(It.IsAny<string>())).Returns(false);
 
 			// Act & Assert
 			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testNameThatIsWayToLongForTheConstructor",contactPoints, FeatureType.Led, _mockComponentRepository.Object));
+				new Component("testNameThatIsWayToLongForTheConstructor",contactPoints, FeatureType.Led));
 		}
 
 		[TestMethod]
@@ -38,25 +27,10 @@ namespace CodectUnitTests
 			List<ContactPoint> contactPoints = new List<ContactPoint>();
 			contactPoints.Add(ContactPoint.N);
 			contactPoints.Add(ContactPoint.E);
-			_mockComponentRepository.Setup(g => g.NameExistsInDatabase(It.IsAny<string>())).Returns(false);
 
 			// Act & Assert
 			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("tn", contactPoints, FeatureType.Led, _mockComponentRepository.Object));
-		}
-
-		[TestMethod]
-		public void Constructor_trows_exception_when_name_already_exists_in_the_database()
-		{
-			// Arrange
-			List<ContactPoint> contactPoints = new List<ContactPoint>();
-			contactPoints.Add(ContactPoint.N);
-			contactPoints.Add(ContactPoint.E);
-			_mockComponentRepository.Setup(g => g.NameExistsInDatabase(It.IsAny<string>())).Returns(true);
-
-			// Act & Assert
-			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testName", contactPoints, FeatureType.Led, _mockComponentRepository.Object));
+				new Component("tn", contactPoints, FeatureType.Led));
 		}
 
 		[TestMethod]
@@ -66,11 +40,10 @@ namespace CodectUnitTests
 			List<ContactPoint> contactPoints = new List<ContactPoint>();
 			contactPoints.Add(ContactPoint.N);
 			contactPoints.Add(ContactPoint.N);
-			_mockComponentRepository.Setup(g => g.NameExistsInDatabase(It.IsAny<string>())).Returns(false);
 
 			// Act & Assert
 			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testName", contactPoints, FeatureType.Led, _mockComponentRepository.Object));
+				new Component("testName", contactPoints, FeatureType.Led));
 		}
 
 		[TestMethod]
@@ -79,11 +52,10 @@ namespace CodectUnitTests
 			// Arrange
 			List<ContactPoint> contactPoints = new List<ContactPoint>();
 			contactPoints.Add(ContactPoint.N);
-			_mockComponentRepository.Setup(g => g.NameExistsInDatabase(It.IsAny<string>())).Returns(false);
 
 			// Act & Assert
 			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testName", contactPoints, FeatureType.Led, _mockComponentRepository.Object));
+				new Component("testName", contactPoints, FeatureType.Led));
 		}
 
 		[TestMethod]
@@ -96,10 +68,9 @@ namespace CodectUnitTests
 			contactPoints.Add(ContactPoint.W);
 			string name = "testName";
 			FeatureType feature = FeatureType.Null;
-			_mockComponentRepository.Setup(g => g.NameExistsInDatabase(It.IsAny<string>())).Returns(false);
 
 			// Act
-			Component component = new Component(name, contactPoints, feature, _mockComponentRepository.Object);
+			Component component = new Component(name, contactPoints, feature);
 
 			//Assert
 			Assert.AreEqual(name, component.Name);

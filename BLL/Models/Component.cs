@@ -12,9 +12,8 @@ namespace BLL.Models
 		public List<ContactPoint> ContactPoints { get; set; }
 		public FeatureType Feature { get; set; }
 
-		public Component(string name, List<ContactPoint> contactPoints, FeatureType feature, IComponentRepository ComponentRepository)
+		public Component(string name, List<ContactPoint> contactPoints, FeatureType feature)
 		{
-			IComponentRepository _componentRepository = ComponentRepository;
 
 			_ = name.Length switch
 			{
@@ -23,10 +22,6 @@ namespace BLL.Models
 				_ => Name = name,
 			};
 
-			if (_componentRepository.NameExistsInDatabase(name))
-			{
-				throw new ComponentExceptions($"The name {name} already exists in the database");
-			}
 			if (contactPoints.Count != contactPoints.Distinct().Count())
 			{
 				throw new ComponentExceptions("The contact points can not contain the same value more than once.");

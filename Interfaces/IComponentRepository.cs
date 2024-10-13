@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Data;
-using System.Security.Cryptography.X509Certificates;
-using DTO;
+﻿using DTO;
 
 namespace Interfaces;
 

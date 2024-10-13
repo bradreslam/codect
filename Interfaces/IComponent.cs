@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Data;
-using DTO;
+﻿using DTO;
 
 namespace Interfaces;
 
