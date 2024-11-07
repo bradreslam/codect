@@ -6,9 +6,14 @@ using Component = BLL.Models.Component;
 
 namespace DAL
 {
-	public class ComponentRepository() : IComponentRepository
+	public class ComponentRepository: IComponentRepository
 	{
 		private readonly CodectEfCoreDbContext _context;
+
+		public ComponentRepository(CodectEfCoreDbContext context)
+		{
+			_context = context ?? throw new ArgumentNullException(nameof(context));
+		}
 
 		public List<ComponentDTO> GetAllComponents()
 		{
@@ -17,60 +22,23 @@ namespace DAL
 			List<ComponentDTO> ComponentDTOS = components
 				.Select(component => new ComponentDTO
 				{
-					Name = component.Name,
 					ContactPoints = component.ContactPoints
-						.Select(contactPoint => new ContactPointDTO
-						{
-							Direction = contactPoint.ToString(),
-							Id = (int)contactPoint
-						})
+						.Select(contactPoint => new string(contactPoint.ToString()))
 						.ToList(),
-					Feature = new FeatureTypeDTO
-					{
-						Feature = component.Feature.ToString(),
-						Id = (int)component.Feature
-					}
+					Feature = component.Feature
 				})
 				.ToList();
 
 			return ComponentDTOS;
 		}
 
-		public ComponentDTO GetComponentByName(string name)
+		public void InsertComponentInDatabase(List<string> contactPoints, string feature)
 		{
-			Component component = _context.Components.Find(name);
-
-			List<ContactPointDTO> contactPointDtos = component.ContactPoints
-				.Select(contactPoint => new ContactPointDTO
-				{
-					Direction = contactPoint.ToString(),
-					Id = (int)contactPoint
-				})
+			List<ContactPoint> listContactPoints = contactPoints
+				.Where(s => Enum.IsDefined(typeof(ContactPoint), s))
+				.Select(s => (ContactPoint)Enum.Parse(typeof(ContactPoint), s))
 				.ToList();
-
-			FeatureTypeDTO featureTypeDTO = new FeatureTypeDTO
-			{
-				Feature = component.Feature.ToString(),
-				Id = (int)component.Feature
-			};
-
-			return new ComponentDTO
-			{
-				Name = component.Name,
-				ContactPoints = contactPointDtos,
-				Feature = featureTypeDTO
-			};
-		}
-
-		public void InsertComponentInDatabase(string name, List<int> contactPoints, int feature)
-		{
-			List<ContactPoint> listContactPoints = new();
-			foreach(var contactPoint in contactPoints)
-			{
-				listContactPoints.Add((ContactPoint)contactPoint);
-			}
-			FeatureType featureType = (FeatureType)feature;
-			Component component = new(name, listContactPoints, featureType);
+			Component component = new(listContactPoints, feature);
 			// Add the new student to the DbSet
 			_context.Components.Add(component);
 
@@ -78,9 +46,9 @@ namespace DAL
 			_context.SaveChanges();
 		}
 
-		public bool NameExistsInDatabase(string name)
+		public bool IdExistsInDatabase(string id)
 		{
-			Component component = _context.Components.Find(name);
+			Component component = _context.Components.Find(id);
 
 			if (component == null)
 			{
@@ -88,6 +56,20 @@ namespace DAL
 			}
 
 			return true;
+		}
+
+		public ComponentDTO GetComponentBasedOnId(string id)
+		{
+			Component component = _context.Components.Find(id);
+			ComponentDTO componentDto = new()
+			{
+				Feature = component.Feature,
+				ContactPoints = component.ContactPoints
+					.Select(contactPoint => new string(contactPoint.ToString()))
+					.ToList(),
+			};
+
+			return componentDto;
 		}
 	}
 }

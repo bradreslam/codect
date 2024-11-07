@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using DAL;
 using Interfaces;
 using BLL.Classes;
+using Codect.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddDbContext<CodectEfCoreDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("CodectEfCoreDbContext"));
 });
 
+builder.Services.AddTransient<ComponentRepository>();
 builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 builder.Services.AddScoped<IComponent, ComponentManager>();
 

@@ -3,10 +3,11 @@ using BLL.Exceptions;
 using BLL.Models;
 using Codect.Classes;
 using DTO;
+using System.ComponentModel;
 
 namespace BLL.Classes
 {
-	public class ComponentManager(IComponentRepository ComponentRepository) : IComponent
+	public class ComponentManager(IComponentRepository ComponentRepository) : Interfaces.IComponent
 	{
 		private readonly IComponentRepository _componentRepository = ComponentRepository;
 		public List<ComponentDTO> GetAllComponents()
@@ -14,33 +15,19 @@ namespace BLL.Classes
 			return ComponentRepository.GetAllComponents();
 		}
 
-		public ComponentDTO GetComponentByName(string name)
+		public void InsertComponentInDatabase( List<string> contactPoints, string feature)
 		{
-			return ComponentRepository.GetComponentByName(name);
+			ComponentRepository.InsertComponentInDatabase(contactPoints, feature);
 		}
 
-		public void InsertComponentInDatabase(string name, List<int> contactPoints, int feature)
+		public bool IdExistsInDatabase(string id)
 		{
-			try
-			{
-				List<ContactPoint> contactPointsList = new();
-				foreach (ContactPoint contactPoint in contactPoints)
-				{
-					contactPointsList.Add((ContactPoint)contactPoint);
-				}
-
-				Component component = new(name, contactPointsList, (FeatureType)feature);
-			}
-			catch(ComponentExceptions ex)
-			{
-
-			}
-			ComponentRepository.InsertComponentInDatabase(name, contactPoints, feature);
+			return ComponentRepository.IdExistsInDatabase(id);
 		}
 
-		public bool NameExistsInDatabase(string name)
+		public ComponentDTO GetComponentBasedOnId(string id)
 		{
-			return ComponentRepository.NameExistsInDatabase(name);
+			return ComponentRepository.GetComponentBasedOnId(id);
 		}
 	}
 }

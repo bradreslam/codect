@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DTO
+namespace BLL.Models
 {
-	public class FeatureTypeDTO
+	public class FeatureModel
 	{
-		public string Feature { get; set; }
-		public int Id { get; set; }
+		public string description;
+		public string offSprite;
+		public string onSprite;
 	}
 }

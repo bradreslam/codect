@@ -1,54 +1,52 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Net;
+﻿using Svg;
 using BLL.Models;
+using BLL;
 using Codect.Classes;
 
-namespace BLL.Classes
+
+public class SpriteFactory
 {
-	public class SpriteFactory
+	private SvgDocument baseSprite;
+
+	public SpriteFactory()
 	{
-		private string baseSprite = "../Codect_Sprites/Component_Background.png";
+		using MemoryStream ms = new(System.Text.Encoding.UTF8.GetBytes(Resource1.Component_Background));
+		baseSprite = SvgDocument.Open<SvgDocument>(ms);
+	}
 
-		public Bitmap ResizeBitmap(Bitmap sourceBMP, int width, int height)
+	public SvgDocument CreateSprite(List<ContactPoint> endpoints, string featureSprite, bool spriteType)
+	{
+		SvgDocument resultSprite = new SvgDocument();
+		resultSprite.Children.Add(baseSprite.DeepCopy());
+		List<SvgDocument> endpointSprites = new();
+		WireDictionary wd = new();
+
+		foreach (ContactPoint endPoint in endpoints)
 		{
-			Bitmap result = new Bitmap(width, height);
-			using (Graphics g = Graphics.FromImage(result))
+			string wireSvgString = wd.GetWireSprite(endPoint, spriteType);
+			using (MemoryStream ms = new(System.Text.Encoding.UTF8.GetBytes(wireSvgString)))
 			{
-				g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				g.DrawImage(sourceBMP, 0, 0, width, height);
+				SvgDocument endpointSvg = SvgDocument.Open<SvgDocument>(ms);
+				endpointSprites.Add(endpointSvg);
 			}
-			return result;
 		}
 
-		public Bitmap CreateSprite(List<ContactPoint> endpoints, string featureSprite, bool spriteType)
+		foreach (SvgDocument sprite in endpointSprites)
 		{
-			Bitmap result = new Bitmap(baseSprite);
-			List<Bitmap> endpointSprites = new();
-			WireDictionary wd = new();
-			foreach (ContactPoint endPoint in endpoints)
-			{
-				endpointSprites.Add(new Bitmap(wd.GetPath(endPoint, spriteType)));
-			}
-
-			using (Graphics g = Graphics.FromImage(result))
-			{
-				g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-
-				foreach (Bitmap sprite in endpointSprites)
-				{
-					g.DrawImage(sprite, new Point(0, 0));
-				}
-
-				if (featureSprite != null)
-				{
-					g.DrawImage(new Bitmap(featureSprite), new Point(0, 0));
-				}
-			}
-
-			Bitmap endSprite = ResizeBitmap(result, 25, 25);
-
-			return endSprite;
+			resultSprite.Children.Add(sprite.DeepCopy());
 		}
+
+		if (!string.IsNullOrEmpty(featureSprite))
+		{
+			using (MemoryStream ms = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(featureSprite)))
+			{
+				SvgDocument featureSvg = SvgDocument.Open<SvgDocument>(ms);
+				resultSprite.Children.Add(featureSvg.DeepCopy());
+			}
+		}
+
+
+
+		return resultSprite;
 	}
 }

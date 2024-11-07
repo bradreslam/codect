@@ -8,20 +8,12 @@ namespace BLL.Models
 	public class Component
 	{
 		[Key]
-		public string Name { get; set; }
+		public string Id { get; set; }
 		public List<ContactPoint> ContactPoints { get; set; }
-		public FeatureType Feature { get; set; }
+		public string Feature { get; set; }
 
-		public Component(string name, List<ContactPoint> contactPoints, FeatureType feature)
+		public Component(List<ContactPoint> contactPoints, string feature)
 		{
-
-			_ = name.Length switch
-			{
-				> 30 => throw new ComponentExceptions($"The name {name} is longer than 30 characters."),
-				< 3 => throw new ComponentExceptions($"The name {name} is shorter than 3 characters."),
-				_ => Name = name,
-			};
-
 			if (contactPoints.Count != contactPoints.Distinct().Count())
 			{
 				throw new ComponentExceptions("The contact points can not contain the same value more than once.");
@@ -35,6 +27,15 @@ namespace BLL.Models
 			}
 
 			Feature = feature;
+
+			string GetContactString(ContactPoint point) => contactPoints.Contains(point) ? "1" : "0";
+
+			Id = GetContactString(ContactPoint.N)
+			        + GetContactString(ContactPoint.E)
+			        + GetContactString(ContactPoint.S)
+			        + GetContactString(ContactPoint.W)
+			            + feature;
+			
 		}
 	}
 }
