@@ -1,0 +1,43 @@
+name: codect_dockerize
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - .github/workflows/*
+      - README.md
+      - .gitignore
+      - .devcontainer/*
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: 'codect'
+  DOTNET_VERSION: '8.0.x'
+  SOLUTION_NAME: 'Codect'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish Application 🔨
+        run: dotnet publish "${{ env.SOLUTION_NAME }}/${{ env.SOLUTION_NAME }}.csproj" -c Release -o ./publish /p:UseAppHost=false
+
+      - name: Build Docker Image 🐳
+        run: docker build -t ${{ env.SOLUTION_NAME }}/Dockerfile .
+      
+      - name: Log in to GitHub Container Registry 🔑
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Tag and Push Docker Image 🚢
+        run: |
+          docker tag ${{ env.IMAGE_NAME }}:latest ghcr.io/${{ github.repository }}:latest
+          docker push ghcr.io/${{ github.repository }}:latest
