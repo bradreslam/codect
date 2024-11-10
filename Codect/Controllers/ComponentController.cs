@@ -3,10 +3,7 @@ using Codect.Classes;
 using DTO;
 using Microsoft.AspNetCore.Mvc;
 using Svg;
-using System.Collections.Generic;
-using System.Linq;
 using BLL.Classes;
-using DAL;
 using Interfaces;
 
 namespace Codect.Controllers
@@ -16,16 +13,22 @@ namespace Codect.Controllers
 	public class ComponentController(IComponentRepository ComponentRepository) : ControllerBase
 	{
 		[HttpGet]
-		[Route("{Name}/image.svg")]
+		[Route("{id}/image.svg")]
 		
-		public IActionResult GetComponentImage(string Id)
+		public IActionResult GetComponentImage(string id)
 		{
+			ComponentManager cm = new(ComponentRepository);
+			ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
+			List<ContactPoint> contactpoints = new();
+			ContactPointDictionary cpd = new();
+
+			foreach (string contactpoint in componentDto.ContactPoints)
+			{
+				contactpoints.Add(cpd.GetContactPoint(contactpoint));
+			}
+
 			SpriteFactory sf = new();
-			List<ContactPoint> contactPoints = new();
-			contactPoints.Add(ContactPoint.N);
-			contactPoints.Add(ContactPoint.E);
-			ComponentSpriteDictionary cd = new();
-			SvgDocument svgDocument = sf.CreateSprite(contactPoints, cd.FindComponentSprite("LedOff"), false);
+			SvgDocument svgDocument = sf.CreateSprite(contactpoints, componentDto.Feature, false);
 
 			var returnSprite = svgDocument.GetXML();
 
@@ -76,6 +79,15 @@ namespace Codect.Controllers
 			} 
 
 			return Ok("Component created successfully."); // Respond with success
+		}
+
+		[HttpGet]
+		[Route("getAllComponentIds")]
+		public List<string> GetAllComponentIds()
+		{
+			ComponentManager cm = new(ComponentRepository);
+
+			return cm.GetAllComponentIds();
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Interfaces;
 using Codect.Classes;
 using DTO;
+using Microsoft.EntityFrameworkCore;
 using Component = BLL.Models.Component;
 
 namespace DAL
@@ -15,21 +16,11 @@ namespace DAL
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 		}
 
-		public List<ComponentDTO> GetAllComponents()
+		public List<string> GetAllComponentIds()
 		{
-			List<Component> components = _context.Components.ToList();
-
-			List<ComponentDTO> ComponentDTOS = components
-				.Select(component => new ComponentDTO
-				{
-					ContactPoints = component.ContactPoints
-						.Select(contactPoint => new string(contactPoint.ToString()))
-						.ToList(),
-					Feature = component.Feature
-				})
+			return _context.Components
+				.Select(component => component.Id)  // Select only the ID property
 				.ToList();
-
-			return ComponentDTOS;
 		}
 
 		public void InsertComponentInDatabase(List<string> contactPoints, string feature)

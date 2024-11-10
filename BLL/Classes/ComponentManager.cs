@@ -10,9 +10,9 @@ namespace BLL.Classes
 	public class ComponentManager(IComponentRepository ComponentRepository) : Interfaces.IComponent
 	{
 		private readonly IComponentRepository _componentRepository = ComponentRepository;
-		public List<ComponentDTO> GetAllComponents()
+		public List<string> GetAllComponentIds()
 		{
-			return ComponentRepository.GetAllComponents();
+			return ComponentRepository.GetAllComponentIds();
 		}
 
 		public void InsertComponentInDatabase( List<string> contactPoints, string feature)
