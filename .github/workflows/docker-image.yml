@@ -39,7 +39,7 @@ jobs:
       - name: Build and Push Docker Images with Compose 🐳
         run: |
   
-          docker-compose -f docker-compose.yml build
+          docker-compose -f Docker-compose.yml build
           
           # Tag images
           docker tag codect_app:latest ghcr.io/${{ github.repository }}:app-latest
