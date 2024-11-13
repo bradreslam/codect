@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=database_codect_container,1433;Database=CodectDb;User Id=sa;Password=p7n&zAr.]WE$=#5g;U9xH2;TrustServerCertificate=true;MultipleActiveResultSets=true;
+    ports:
+      - "8080:8080"   # Map container port 8080 to host
+      - "8081:8081"   # Map container port 8081 to host
+    depends_on:
+      - database_codect_container
+    networks:
+      - codect_network
+
+  database_codect_container:
+    image: mcr.microsoft.com/mssql/server:2022-latest  # Use the latest SQL Server image
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=p7n&zAr.]WE$=#5g;U9xH2
+      - MSSQL_DB=CodectDb
+    ports:
+      - "1433:1433"   # SQL Server default port
+    networks:
+      - codect_network
+
+networks:
+  codect_network:
+    driver: bridge
