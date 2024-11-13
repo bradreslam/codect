@@ -31,13 +31,18 @@ jobs:
       - name: Publish Application 🔨
         run: dotnet publish "${{ env.SOLUTION_NAME }}/${{ env.SOLUTION_NAME }}.csproj" -c Release -o ./publish /p:UseAppHost=false
 
-      - name: Build Docker Image 🐳
-        run: docker build -t ${{ env.IMAGE_NAME }} .
-      
-      - name: Log in to GitHub Container Registry 🔑
-        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Tag and Push Docker Image 🚢
+      - name: Build and Push Docker Images with Compose 🐳
         run: |
-          docker tag ${{ env.IMAGE_NAME }}:latest ghcr.io/${{ github.repository }}:latest
-          docker push ghcr.io/${{ github.repository }}:latest
+  
+          docker-compose -f docker-compose.yml build
+          
+          # Tag images
+          docker tag codect_app:latest ghcr.io/${{ github.repository }}:app-latest
+          docker tag codect_database_codect_container:latest ghcr.io/${{ github.repository }}:db-latest
+          
+          # Log in to GitHub Container Registry
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Push both images
+          docker push ghcr.io/${{ github.repository }}:app-latest
+          docker push ghcr.io/${{ github.repository }}:db-latest
