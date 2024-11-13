@@ -75,7 +75,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://www. [rest of string was truncated]&quot;;.
+        ///   xmlns:xlin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Blue_Led_On {
             get {
@@ -98,7 +98,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://www. [rest of string was truncated]&quot;;.
+        ///   xmlns:xlin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Component_Background {
             get {
@@ -121,7 +121,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string E_Wire_Off {
             get {
@@ -144,7 +144,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string E_Wire_On {
             get {
@@ -167,7 +167,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Green_Led_On {
             get {
@@ -190,7 +190,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://www. [rest of string was truncated]&quot;;.
+        ///   xmlns:xlin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Led_Off {
             get {
@@ -213,7 +213,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string N_Wire_Off {
             get {
@@ -236,7 +236,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string N_Wire_On {
             get {
@@ -259,7 +259,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Red_Led_On {
             get {
@@ -282,7 +282,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string S_Wire_Off {
             get {
@@ -305,7 +305,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string S_Wire_On {
             get {
@@ -328,7 +328,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string W_Wire_Off {
             get {
@@ -351,7 +351,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://www. [rest of string was truncated]&quot;;.
+        ///   xmlns:xlin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string W_Wire_On {
             get {
@@ -374,7 +374,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://www. [rest of string was truncated]&quot;;.
+        ///   xmlns:xlin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string White_Led_On {
             get {
@@ -397,7 +397,7 @@ namespace BLL {
         ///   sodipodi:docname=&quot;Component_Background.svg&quot;
         ///   xmlns:inkscape=&quot;http://www.inkscape.org/namespaces/inkscape&quot;
         ///   xmlns:sodipodi=&quot;http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd&quot;
-        ///   xmlns:xlink=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   xmlns:xl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Yellow_Led_On {
             get {
