@@ -28,6 +28,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Publish Application 🔨
         run: dotnet publish "${{ env.SOLUTION_NAME }}/${{ env.SOLUTION_NAME }}.csproj" -c Release -o ./publish /p:UseAppHost=false
 
