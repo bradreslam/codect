@@ -37,10 +37,30 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
 	var dbContext = scope.ServiceProvider.GetRequiredService<CodectEfCoreDbContext>();
-	dbContext.Database.Migrate();
-	if (!dbContext.Database.CanConnect())
+	var retryCount = 0;
+	const int maxRetries = 5;
+
+	while (retryCount < maxRetries)
 	{
-		throw new NotImplementedException("Can't connect to database");
+		try
+		{
+			dbContext.Database.Migrate();
+			if (dbContext.Database.CanConnect())
+			{
+				Console.WriteLine("Successfully connected to the database.");
+				break;
+			}
+		}
+		catch (Exception ex)
+		{
+			retryCount++;
+			Console.WriteLine($"Attempt {retryCount} failed to connect to the database. Error: {ex.Message}");
+			if (retryCount >= maxRetries)
+			{
+				throw new Exception("Failed to connect to the database after multiple attempts.", ex);
+			}
+			Task.Delay(5000).Wait(); // Wait for 5 seconds before retrying
+		}
 	}
 }
 
