@@ -28,16 +28,23 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Publish Application 🔨
         run: dotnet publish "${{ env.SOLUTION_NAME }}/${{ env.SOLUTION_NAME }}.csproj" -c Release -o ./publish /p:UseAppHost=false
 
-      - name: Build Docker Image 🐳
-        run: docker build -t ${{ env.IMAGE_NAME }} .
-      
-      - name: Log in to GitHub Container Registry 🔑
-        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Tag and Push Docker Image 🚢
+      - name: Build and Push Docker Image with Compose 🐳
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          docker tag ${{ env.IMAGE_NAME }}:latest ghcr.io/${{ github.repository }}:latest
-          docker push ghcr.io/${{ github.repository }}:latest
+          # Build the app image
+          docker-compose -f Docker-compose.yml build app
+          
+          # Log in to GitHub Container Registry
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Push the app image
+          docker push ghcr.io/${{ github.repository }}:app-latest
