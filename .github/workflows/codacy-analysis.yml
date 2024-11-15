@@ -1,6 +1,15 @@
 name: Codacy Analysis CLI
 
-on: ["push"]
+on: 
+   push:
+      branches:
+        - master
+      paths-ignore:
+        - .github/workflows/*
+        - README.md
+        - .gitignore
+        - .devcontainer/*
+   workflow_dispatch:
 
 jobs:
   codacy-analysis-cli:
