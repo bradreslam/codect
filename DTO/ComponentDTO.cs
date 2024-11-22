@@ -1,5 +1,4 @@
-﻿using Svg;
-
+﻿
 namespace DTO
 {
 	public class ComponentDTO
