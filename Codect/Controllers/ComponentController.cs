@@ -44,19 +44,34 @@ namespace Codect.Controllers
 		}
 
 		[HttpGet]
-		[Route("ComponentInfo")]
-		public Dictionary<string, string> GetComponentInfo(string Id)
+		[Route("{id}/ComponentInfo")]
+		public Dictionary<string, string> GetComponentInfo(string id)
 		{
 			ComponentManager cm = new(ComponentRepository);
-			ComponentDTO componentDto = cm.GetComponentBasedOnId(Id);
+			ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
 
-			Dictionary<string, string> componentInfo = new()
+			if (componentDto.Feature != "")
 			{
-				{"endPoints",componentDto.ContactPoints.ToString()},
-				{"feature",componentDto.Feature}
-			};
-
-			return componentInfo;
+				FeatureDictionary fd = new();
+				FeatureModel component = fd.GetFeatureModel(componentDto.Feature);
+				Dictionary<string, string> componentInfo = new()
+				{
+					{"endPoints",string.Join( ",", componentDto.ContactPoints)},
+					{"description", component.description},
+					{"feature",componentDto.Feature}
+				};
+				return componentInfo;
+			}
+			else
+			{
+				Dictionary<string, string> componentInfo = new()
+				{
+					{"endPoints",string.Join( ",", componentDto.ContactPoints)},
+					{"description", null},
+					{"feature", "None"}
+				};
+				return componentInfo;
+			}
 		}
 
 		[HttpPost]

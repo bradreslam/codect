@@ -7,15 +7,16 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Specify environment variable for connection string
-ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Codect/Codect.csproj", "Codect/"]
+COPY ["BLL/BLL.csproj", "BLL/"]
+COPY ["DTO/DTO.csproj", "DTO/"]
+COPY ["Interfaces/Interfaces.csproj", "Interfaces/"]
+COPY ["DAL/DAL.csproj", "DAL/"]
 RUN dotnet restore "./Codect/Codect.csproj"
 COPY . .
 WORKDIR "/src/Codect"

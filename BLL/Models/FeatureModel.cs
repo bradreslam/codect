@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BLL.Models
 {
 	public class FeatureModel
 	{
-		public string description;
-		public string offSprite;
-		public string onSprite;
+		public string description { get; set; }
+		public string offSprite { get; set; }
+		public string onSprite { get; set; }
 	}
 }
