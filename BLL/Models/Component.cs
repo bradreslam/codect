@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BLL.Exceptions;
+using BLL.ValidationAttributes;
 using Codect.Classes;
-using Interfaces;
+using AllowedValuesAttribute = BLL.ValidationAttributes.AllowedValuesAttribute;
 
 namespace BLL.Models
 {
@@ -9,24 +9,20 @@ namespace BLL.Models
 	{
 		[Key]
 		public string Id { get; set; }
+		[Required]
+		[MinLength(2, ErrorMessage = "There can be no less than 2 contact points")]
+		[NoDuplicates]
 		public List<ContactPoint> ContactPoints { get; set; }
+		[AllowedValues(typeof(FeatureDictionary), ErrorMessage = "Feature has to exist in dictionary")]
 		public string Feature { get; set; }
 
 		public Component(List<ContactPoint> contactPoints, string feature)
 		{
-			if (contactPoints.Count != contactPoints.Distinct().Count())
-			{
-				throw new ComponentExceptions("The contact points can not contain the same value more than once.");
-			}
-			if (contactPoints.Count < 2)
-			{
-				throw new ComponentExceptions("There has to be at least 2 contact points on a valid component");
-			}
-			{
-				ContactPoints = contactPoints;
-			}
+			ContactPoints = contactPoints;
 
 			Feature = feature;
+
+			Validate();
 
 			string GetContactString(ContactPoint point) => contactPoints.Contains(point) ? "1" : "0";
 
@@ -36,6 +32,12 @@ namespace BLL.Models
 			        + GetContactString(ContactPoint.W)
 			            + feature;
 			
+		}
+
+		private void Validate()
+		{
+			var context = new ValidationContext(this);
+			Validator.ValidateObject(this, context, validateAllProperties: true);
 		}
 	}
 }

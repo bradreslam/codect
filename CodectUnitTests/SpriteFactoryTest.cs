@@ -1,31 +1,24 @@
 ﻿using Codect.Classes;
 using Svg;
+using Xunit;
 
 namespace CodectUnitTests
 {
-	[TestClass]
+	
 	public class SpriteFactoryTests
 	{
-		private SpriteFactory _spriteFactory;
-		private List<ContactPoint> endpoints;
+		private SpriteFactory _spriteFactory = new();
+		private List<ContactPoint> endpoints = new()
+			{ ContactPoint.N, ContactPoint.E };
 
-		[TestInitialize]
-		public void TestInitialize()
-		{
-			_spriteFactory = new SpriteFactory();
-			endpoints = new();
-			endpoints.Add(ContactPoint.N);
-			endpoints.Add( ContactPoint.E);
-		}
-
-		[TestMethod]
+		[Fact]
 		public void Constructor_InitializesBaseSprite()
 		{
-			Assert.IsNotNull(_spriteFactory);
+			Xunit.Assert.NotNull(_spriteFactory);
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void CreateSprite_WithNullFeatureSprite_ReturnsValidSprite()
 		{
 			// Arrange
@@ -35,7 +28,7 @@ namespace CodectUnitTests
 			SvgDocument result = _spriteFactory.CreateSprite(endpoints, null, spriteType);
 
 			// Assert
-			Assert.IsNotNull(result);
+			Xunit.Assert.NotNull(result);
 		}
 	}
 }
