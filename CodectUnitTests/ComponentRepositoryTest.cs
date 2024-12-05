@@ -40,8 +40,8 @@ namespace CodectUnitTests
 			// Arrange
 			var components = new List<Component>
 		{
-			new(contactPointlist, "test") { Id = "1" },
-			new(contactPointlist, "test") { Id = "2" }
+			new(contactPointlist, "RedLed") { Id = "1" },
+			new(contactPointlist, "RedLed") { Id = "2" }
 		}.AsQueryable();
 			var mockSet = CreateMockDbSet(components);
 
@@ -64,7 +64,7 @@ namespace CodectUnitTests
 		{
 			// Arrange
 			var contactPoints = new List<string> { "E", "N" };
-			string feature = "TestFeature";
+			string feature = "RedLed";
 
 			_mockDbSet.Setup(m => m.Add(It.IsAny<Component>()));
 			_mockContext.Setup(m => m.SaveChanges()).Returns(1);
@@ -81,7 +81,7 @@ namespace CodectUnitTests
 		public void IdExistsInDatabase_WhenIdExists_ShouldReturnTrue()
 		{
 			// Arrange
-			var component = new Component(contactPointlist, "test") { Id = "1" };
+			var component = new Component(contactPointlist, "RedLed") { Id = "1" };
 			_mockDbSet.Setup(m => m.Find(It.IsAny<string>())).Returns(component);
 
 			// Act
@@ -108,7 +108,7 @@ namespace CodectUnitTests
 		public void GetComponentBasedOnId_WhenIdExists_ShouldReturnComponentDTO()
 		{
 			// Arrange
-			var component = new Component(contactPointlist, "TestFeature") { Id = "1" };
+			var component = new Component(contactPointlist, "RedLed") { Id = "1" };
 
 			_mockDbSet.Setup(m => m.Find(It.IsAny<string>())).Returns(component);
 
@@ -117,7 +117,7 @@ namespace CodectUnitTests
 
 			// Assert
 			Xunit.Assert.NotNull(result);
-			Xunit.Assert.Equal("TestFeature", result.Feature);
+			Xunit.Assert.Equal("RedLed", result.Feature);
 			Xunit.Assert.Equal(2, result.ContactPoints.Count);
 			Xunit.Assert.Contains("E", result.ContactPoints);
 			Xunit.Assert.Contains("N", result.ContactPoints);
