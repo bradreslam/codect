@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CodectUnitTests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "test"
+      }
+    }
+  }
+}

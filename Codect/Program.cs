@@ -2,9 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using DAL;
 using Interfaces;
 using BLL.Classes;
-using Codect.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+	.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+	.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+	.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddCors(options =>
@@ -37,6 +41,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
 	var dbContext = scope.ServiceProvider.GetRequiredService<CodectEfCoreDbContext>();
+
+	if (app.Environment.IsDevelopment())
+	{
+		dbContext.Database.EnsureCreated();
+	}
 }
 
 // Configure the HTTP request pipeline.

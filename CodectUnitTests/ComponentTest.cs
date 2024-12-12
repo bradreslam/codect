@@ -78,7 +78,7 @@ namespace CodectUnitTests
 		{
 			// Arrange
 			List<ContactPoint> contactPoints = new() { ContactPoint.N, ContactPoint.S };
-			string validFeature = "RedLed";
+			string validFeature = "";
 
 			// Act
 			Component component = new(contactPoints, validFeature);

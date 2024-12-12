@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 
 namespace BLL.ValidationAttributes;
@@ -25,7 +26,7 @@ public class AllowedValuesAttribute : ValidationAttribute
 		var keys = dictionary.GetKeyList();
 
 		// Validate the value
-		if (value is string featureName && keys.Contains(featureName))
+		if (value is string featureName && keys.Contains(featureName) || value is string feature && string.IsNullOrEmpty(feature))
 		{
 			return ValidationResult.Success;
 		}
