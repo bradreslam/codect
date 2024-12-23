@@ -8,12 +8,11 @@ using Interfaces;
 
 namespace Codect.Controllers
 {
-	[Route("/api/components")]
 	[ApiController]
 	public class ComponentController(IComponentRepository ComponentRepository) : ControllerBase
 	{
 		[HttpGet]
-		[Route("{id}/image.svg")]
+		[Route("components/{id}/image")]
 		
 		public IActionResult GetComponentImage(string id)
 		{
@@ -36,7 +35,7 @@ namespace Codect.Controllers
 		}
 
 		[HttpGet]
-		[Route("featureList")]
+		[Route("features")]
 		public List<string> GetFeatureList()
 		{
 			FeatureDictionary fd = new();
@@ -44,7 +43,7 @@ namespace Codect.Controllers
 		}
 
 		[HttpGet]
-		[Route("{id}/ComponentInfo")]
+		[Route("components/{id}")]
 		public Dictionary<string, string> GetComponentInfo(string id)
 		{
 			ComponentManager cm = new(ComponentRepository);
@@ -75,7 +74,7 @@ namespace Codect.Controllers
 		}
 
 		[HttpPost]
-		[Route("createComponent")]
+		[Route("components/new-component")]
 		public IActionResult Post([FromBody] ComponentDTO componenDTO)
 		{
 			if (componenDTO == null)
@@ -84,20 +83,24 @@ namespace Codect.Controllers
 			}
 
 			ComponentManager cm = new(ComponentRepository);
+			string id;
 			try
 			{
-				cm.InsertComponentInDatabase(componenDTO.ContactPoints, componenDTO.Feature);
+				id = cm.InsertComponentInDatabase(componenDTO.ContactPoints, componenDTO.Feature);
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex);
+				return BadRequest(new
+				{
+					message = ex.Message
+				});
 			} 
 
-			return Ok("Component created successfully."); // Respond with success
+			return Ok(id); // Respond with success
 		}
 
 		[HttpGet]
-		[Route("getAllComponentIds")]
+		[Route("components/ids")]
 		public List<string> GetAllComponentIds()
 		{
 			ComponentManager cm = new(ComponentRepository);

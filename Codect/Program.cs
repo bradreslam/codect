@@ -5,11 +5,6 @@ using BLL.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration
-	.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-	.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-	.AddEnvironmentVariables();
-
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
@@ -42,7 +37,7 @@ using (var scope = app.Services.CreateScope())
 {
 	var dbContext = scope.ServiceProvider.GetRequiredService<CodectEfCoreDbContext>();
 
-	if (app.Environment.IsDevelopment())
+	if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 	{
 		dbContext.Database.EnsureCreated();
 	}

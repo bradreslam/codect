@@ -1,4 +1,5 @@
-﻿using BLL.Models;
+﻿using System.Data;
+using BLL.Models;
 using Interfaces;
 using Codect.Classes;
 using DTO;
@@ -23,18 +24,24 @@ namespace DAL
 				.ToList();
 		}
 
-		public void InsertComponentInDatabase(List<string> contactPoints, string feature)
+		public string InsertComponentInDatabase(List<string> contactPoints, string feature)
 		{
 			List<ContactPoint> listContactPoints = contactPoints
 				.Where(s => Enum.IsDefined(typeof(ContactPoint), s))
 				.Select(s => (ContactPoint)Enum.Parse(typeof(ContactPoint), s))
 				.ToList();
 			Component component = new(listContactPoints, feature);
-			// Add the new student to the DbSet
+
+			if (IdExistsInDatabase(component.Id))
+			{
+				throw new DataException("Component already exists in the database");
+			}
+			
 			_context.Components.Add(component);
 
 			// Save changes to the database
 			_context.SaveChanges();
+			return component.Id;
 		}
 
 		public bool IdExistsInDatabase(string id)
@@ -51,16 +58,23 @@ namespace DAL
 
 		public ComponentDTO GetComponentBasedOnId(string id)
 		{
-			Component component = _context.Components.Find(id);
-			ComponentDTO componentDto = new()
+			if (IdExistsInDatabase(id))
 			{
-				Feature = component.Feature,
-				ContactPoints = component.ContactPoints
-					.Select(contactPoint => new string(contactPoint.ToString()))
-					.ToList(),
-			};
+				Component component = _context.Components.Find(id);
+				ComponentDTO componentDto = new()
+				{
+					Feature = component.Feature,
+					ContactPoints = component.ContactPoints
+						.Select(contactPoint => new string(contactPoint.ToString()))
+						.ToList(),
+				};
 
-			return componentDto;
+				return componentDto;
+			}
+			else
+			{
+				throw new DataException("Component does not exist in database");
+			}
 		}
 	}
 }

@@ -11,9 +11,9 @@ namespace BLL.Classes
 			return ComponentRepository.GetAllComponentIds();
 		}
 
-		public void InsertComponentInDatabase( List<string> contactPoints, string feature)
+		public string InsertComponentInDatabase( List<string> contactPoints, string feature)
 		{
-			ComponentRepository.InsertComponentInDatabase(contactPoints, feature);
+			return ComponentRepository.InsertComponentInDatabase(contactPoints, feature);
 		}
 
 		public bool IdExistsInDatabase(string id)
