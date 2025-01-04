@@ -1,81 +1,92 @@
-using BLL.Exceptions;
-using BLL.Models;
+﻿using BLL.Models;
 using Codect.Classes;
+using System.ComponentModel.DataAnnotations;
+using Xunit;
 
 namespace CodectUnitTests
 {
 	[TestClass]
 	public class ComponentTest
 	{
-		[TestMethod]
-		public void Constructor_trows_exception_when_name_is_longer_than_30_characters()
+		[Fact]
+		public void Component_gives_error_if_feature_is_not_in_dictionary()
 		{
 			// Arrange
-			List<ContactPoint> contactPoints = new List<ContactPoint>();
-			contactPoints.Add(ContactPoint.N);
-			contactPoints.Add(ContactPoint.E);
+			List<ContactPoint> contactPoints = new() { ContactPoint.E, ContactPoint.N };
+			string invalidFeature = "InvalidFeature";
 
 			// Act & Assert
-			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testNameThatIsWayToLongForTheConstructor",contactPoints, FeatureType.Led));
+			var exception = Xunit.Assert.Throws<ValidationException>(() =>
+			{
+				new Component(contactPoints, invalidFeature);
+			});
+
+			Xunit.Assert.Equal("Feature has to exist in dictionary", exception.Message);
 		}
 
-		[TestMethod]
-		public void Constructor_trows_exception_when_name_is_shorter_than_3_characters()
+		[Fact]
+		public void Component_gives_error_if_contact_point_list_is_shorter_than_2()
 		{
 			// Arrange
-			List<ContactPoint> contactPoints = new List<ContactPoint>();
-			contactPoints.Add(ContactPoint.N);
-			contactPoints.Add(ContactPoint.E);
+			List<ContactPoint> contactPoints = new() { ContactPoint.N };
+			string validFeature = "RedLed";
 
 			// Act & Assert
-			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("tn", contactPoints, FeatureType.Led));
+			var exception = Xunit.Assert.Throws<ValidationException>(() =>
+			{
+				new Component(contactPoints, validFeature);
+			});
+
+			Xunit.Assert.Equal("There can be no less than 2 contact points", exception.Message);
 		}
 
-		[TestMethod]
-		public void Constructor_trows_exception_when_there_is_more_than_one_of_the_same_contactPoint()
+		[Fact]
+		public void Component_gives_error_if_contact_point_list_contains_double_values()
 		{
 			// Arrange
-			List<ContactPoint> contactPoints = new List<ContactPoint>();
-			contactPoints.Add(ContactPoint.N);
-			contactPoints.Add(ContactPoint.N);
+			List<ContactPoint> contactPoints = new()
+		{
+			ContactPoint.N, ContactPoint.N
+		};
+			string validFeature = "RedLed";
 
 			// Act & Assert
-			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testName", contactPoints, FeatureType.Led));
+			var exception = Xunit.Assert.Throws<ValidationException>(() =>
+			{
+				new Component(contactPoints, validFeature);
+			});
+
+			Xunit.Assert.Equal("The list contains duplicate values.", exception.Message);
 		}
 
-		[TestMethod]
-		public void Constructor_trows_exception_when_there_is_less_than_two_contactPoints()
+		[Fact]
+		public void Component_id_gets_created_correctly()
 		{
 			// Arrange
-			List<ContactPoint> contactPoints = new List<ContactPoint>();
-			contactPoints.Add(ContactPoint.N);
-
-			// Act & Assert
-			Xunit.Assert.Throws<ComponentExceptions>(() =>
-				new Component("testName", contactPoints, FeatureType.Led));
-		}
-
-		[TestMethod]
-		public void Constructor_compiles_correctly_when_nothing_is_wrong()
-		{
-			// Arrange
-			List<ContactPoint> contactPoints = new List<ContactPoint>();
-			contactPoints.Add(ContactPoint.N);
-			contactPoints.Add(ContactPoint.E);
-			contactPoints.Add(ContactPoint.W);
-			string name = "testName";
-			FeatureType feature = FeatureType.Null;
+			List<ContactPoint> contactPoints = new() { ContactPoint.N, ContactPoint.E };
+			string validFeature = "RedLed";
 
 			// Act
-			Component component = new Component(name, contactPoints, feature);
+			Component component = new(contactPoints, validFeature);
 
-			//Assert
-			Assert.AreEqual(name, component.Name);
-			Assert.AreEqual(contactPoints, component.ContactPoints);
-			Assert.AreEqual(feature, component.Feature);
+			// Assert
+			Xunit.Assert.Equal("1100RedLed", component.Id);
+		}
+
+		[Fact]
+		public void Component_gets_initialized_correctly_when_nothing_is_wrong()
+		{
+			// Arrange
+			List<ContactPoint> contactPoints = new() { ContactPoint.N, ContactPoint.S };
+			string validFeature = "";
+
+			// Act
+			Component component = new(contactPoints, validFeature);
+
+			// Assert
+			Xunit.Assert.NotNull(component);
+			Xunit.Assert.Equal(contactPoints, component.ContactPoints);
+			Xunit.Assert.Equal(validFeature, component.Feature);
 		}
 	}
 }

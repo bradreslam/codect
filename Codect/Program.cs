@@ -1,6 +1,7 @@
-using BLL.Database;
 using Microsoft.EntityFrameworkCore;
 using DAL;
+using Interfaces;
+using BLL.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,35 +33,20 @@ builder.Services.AddDbContext<CodectEfCoreDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("CodectEfCoreDbContext"));
 });
 
+builder.Services.AddTransient<ComponentRepository>();
+builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
+builder.Services.AddScoped<IComponent, ComponentManager>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
 	var dbContext = scope.ServiceProvider.GetRequiredService<CodectEfCoreDbContext>();
-	var retryCount = 0;
-	const int maxRetries = 5;
 
-	while (retryCount < maxRetries)
+	if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 	{
-		try
-		{
-			dbContext.Database.Migrate();
-			if (dbContext.Database.CanConnect())
-			{
-				Console.WriteLine("Successfully connected to the database.");
-				break;
-			}
-		}
-		catch (Exception ex)
-		{
-			retryCount++;
-			Console.WriteLine($"Attempt {retryCount} failed to connect to the database. Error: {ex.Message}");
-			if (retryCount >= maxRetries)
-			{
-				throw new Exception("Failed to connect to the database after multiple attempts.", ex);
-			}
-			Task.Delay(5000).Wait(); // Wait for 5 seconds before retrying
-		}
+		dbContext.Database.EnsureCreated();
+
 	}
 }
 
@@ -72,11 +58,11 @@ if (app.Environment.IsDevelopment())
 	app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseCors("AllowReactApp");
+app.UseHttpsRedirection();
 
+app.UseCors("AllowReactApp");
 
 app.UseAuthorization();
 
