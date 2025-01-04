@@ -1,0 +1,50 @@
+name: codect_dockerize
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - .github/workflows/*
+      - README.md
+      - .gitignore
+      - .devcontainer/*
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: 'codect'
+  DOTNET_VERSION: '8.0.x'
+  SOLUTION_NAME: 'Codect'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Publish Application 🔨
+        run: dotnet publish "${{ env.SOLUTION_NAME }}/${{ env.SOLUTION_NAME }}.csproj" -c Release -o ./publish /p:UseAppHost=false
+
+      - name: Build and Push Docker Image with Compose 🐳
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          # Build the app image
+          docker-compose -f Docker-compose.yml build app
+          
+          # Log in to GitHub Container Registry
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Push the app image
+          docker push ghcr.io/${{ github.repository }}:app-latest
