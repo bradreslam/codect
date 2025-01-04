@@ -130,7 +130,7 @@ namespace CodectUnitTests
 			_mockDbSet.Setup(m => m.Find(It.IsAny<string>())).Returns((Component)null);
 
 			// Act & Assert
-			Xunit.Assert.Throws<NullReferenceException>(() => _repository.GetComponentBasedOnId("1"));
+			Xunit.Assert.Throws<FileNotFoundException>(() => _repository.GetComponentBasedOnId("1"));
 		}
 	}
 }

@@ -73,7 +73,7 @@ namespace DAL
 			}
 			else
 			{
-				throw new DataException("Component does not exist in database");
+				throw new FileNotFoundException("Component does not exist in database");
 			}
 		}
 	}

@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using DAL;
 using Interfaces;
 using BLL.Classes;
+using Codect.Controllers;
+using Microsoft.AspNetCore.Http.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddCors(options =>
 			.AllowCredentials();
 	});
 });
+builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -59,6 +62,16 @@ app.UseCors("AllowReactApp");
 
 app.UseAuthorization();
 
+app.UseEndpoints(endpoints =>
+{
+	endpoints.MapHub<ComponentListHub>("/componentHub", options =>
+	{
+		options.Transports = HttpTransportType.WebSockets;
+	});
+});
+
 app.MapControllers();
 
 app.Run();
+
+public partial class StartUp { }

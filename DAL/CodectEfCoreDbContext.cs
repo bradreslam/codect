@@ -11,10 +11,6 @@ namespace DAL
 		{
 		}
 
-		// Parameterless constructor for testing
-		public CodectEfCoreDbContext()
-			: base(new DbContextOptionsBuilder<CodectEfCoreDbContext>().Options) { }
-
 		public virtual DbSet<Component> Components { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

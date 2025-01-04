@@ -16,22 +16,29 @@ namespace Codect.Controllers
 		
 		public IActionResult GetComponentImage(string id)
 		{
-			ComponentManager cm = new(ComponentRepository);
-			ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
-			List<ContactPoint> contactpoints = new();
-			ContactPointDictionary cpd = new();
-
-			foreach (string contactpoint in componentDto.ContactPoints)
+			try
 			{
-				contactpoints.Add(cpd.GetContactPoint(contactpoint));
+				ComponentManager cm = new(ComponentRepository);
+				ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
+				List<ContactPoint> contactpoints = new();
+				ContactPointDictionary cpd = new();
+
+				foreach (string contactpoint in componentDto.ContactPoints)
+				{
+					contactpoints.Add(cpd.GetContactPoint(contactpoint));
+				}
+
+				SpriteFactory sf = new();
+				SvgDocument svgDocument = sf.CreateSprite(contactpoints, componentDto.Feature, false);
+
+				var returnSprite = svgDocument.GetXML();
+
+				return Content(returnSprite, "image/svg+xml");
 			}
-
-			SpriteFactory sf = new();
-			SvgDocument svgDocument = sf.CreateSprite(contactpoints, componentDto.Feature, false);
-
-			var returnSprite = svgDocument.GetXML();
-
-			return Content(returnSprite, "image/svg+xml");
+			catch (Exception ex)
+			{
+				return NotFound(ex);
+			}
 		}
 
 		[HttpGet]
