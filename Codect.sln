@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodectUnitTests", "CodectUn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{B763A76D-167C-424F-8B5F-85069D6F1E00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{CCEB20E1-96F6-4979-A36E-80B359035D31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{CCEB20E1-96F6-4979-A36E-80B359035D31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{0370E24E-49B3-4C17-8135-99561304E02D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{0370E24E-49B3-4C17-8135-99561304E02D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{C7F8D5D8-C28F-4798-9E41-455F4B2360CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0370E24E-49B3-4C17-8135-99561304E02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0370E24E-49B3-4C17-8135-99561304E02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0370E24E-49B3-4C17-8135-99561304E02D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7F8D5D8-C28F-4798-9E41-455F4B2360CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7F8D5D8-C28F-4798-9E41-455F4B2360CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7F8D5D8-C28F-4798-9E41-455F4B2360CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7F8D5D8-C28F-4798-9E41-455F4B2360CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

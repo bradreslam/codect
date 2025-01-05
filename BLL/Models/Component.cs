@@ -1,38 +1,43 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BLL.Exceptions;
+using BLL.ValidationAttributes;
 using Codect.Classes;
+using AllowedValuesAttribute = BLL.ValidationAttributes.AllowedValuesAttribute;
 
 namespace BLL.Models
 {
 	public class Component
 	{
 		[Key]
-		public string Name { get; set; }
+		public string Id { get; set; }
+		[Required]
+		[MinLength(2, ErrorMessage = "There can be no less than 2 contact points")]
+		[NoDuplicates]
 		public List<ContactPoint> ContactPoints { get; set; }
-		public FeatureType Feature { get; set; }
+		[AllowedValues(typeof(FeatureDictionary), ErrorMessage = "Feature has to exist in dictionary")]
+		public string Feature { get; set; }
 
-		public Component(string name, List<ContactPoint> contactPoints, FeatureType feature)
+		public Component(List<ContactPoint> contactPoints, string feature)
 		{
-			_ = name.Length switch
-			{
-				> 30 => throw new ComponentExceptions($"The name {name} is longer than 30 characters."),
-				< 3 => throw new ComponentExceptions($"The name {name} is shorter than 3 characters."),
-				_ => Name = name,
-			};
-
-			if (contactPoints.Count != contactPoints.Distinct().Count())
-			{
-				throw new ComponentExceptions("The contact points can not contain the same value more than once.");
-			}
-			if (contactPoints.Count < 2)
-			{
-				throw new ComponentExceptions("There has to be at least 2 contact points on a valid component");
-			}
-			{
-				ContactPoints = contactPoints;
-			}
+			ContactPoints = contactPoints;
 
 			Feature = feature;
+
+			Validate();
+
+			string GetContactString(ContactPoint point) => contactPoints.Contains(point) ? "1" : "0";
+
+			Id = GetContactString(ContactPoint.N)
+			        + GetContactString(ContactPoint.E)
+			        + GetContactString(ContactPoint.S)
+			        + GetContactString(ContactPoint.W)
+			            + feature;
+			
+		}
+
+		private void Validate()
+		{
+			var context = new ValidationContext(this);
+			Validator.ValidateObject(this, context, validateAllProperties: true);
 		}
 	}
 }
