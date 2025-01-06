@@ -1,3 +1,9 @@
+How to run the program:
+1.Download the docker-compose.yml file from the root of the repository
+2. go to your terminal and navigate to the location of the docker-compose.yml file using cd/{your file location}
+3. run the command "docker-compose -f Docker-compose.yml up" in bash or powershell
+4. go to http://localhost:8080 to see the application in action
+
 database initialisation commands
 
 dotnet ef migrations add InitialCreate --startup-project Codect --project DAL
