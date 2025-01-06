@@ -1,5 +1,8 @@
 version: '3.8'
 
+env:
+  GITHUB_REPOSITORY: 'bradreslam/codect'
+
 services:
   app:
     build:
