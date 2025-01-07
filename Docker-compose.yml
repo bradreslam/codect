@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/bradreslam/codect:app-latest
     environment:
-      - ConnectionStrings__DefaultConnection="Server=database_codect_container,1433;Database=CodectDb;User Id=sa;Password=p7n&zAr.]WE$$=#5g;U9xH2;TrustServerCertificate=true;MultipleActiveResultSets=true;"
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "8080:8080"
       - "8081:8081"
