@@ -25,12 +25,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-	options.ListenAnyIP(8080);
-	options.ListenAnyIP(8081);
-});
-
 builder.Services.AddDbContext<CodectEfCoreDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("CodectEfCoreDbContext"));

@@ -1,10 +1,8 @@
 ﻿using BLL.Classes;
 using BLL.Models;
 using Codect.Classes;
-using DAL;
 using DTO;
 using Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Svg;
 
