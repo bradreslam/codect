@@ -26,11 +26,11 @@ namespace DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ContactPoints")
+                    b.Property<string>("contactPoints")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Feature")
+                    b.Property<string>("feature")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

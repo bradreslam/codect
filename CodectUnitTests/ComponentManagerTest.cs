@@ -120,8 +120,8 @@ namespace CodectUnitTests
 			string feature = "RedLed";
 			ComponentDTO componentDto = new()
 			{
-				ContactPoints = contactPoints,
-				Feature = feature
+				contactPoints = contactPoints,
+				feature = feature
 			};
 			_mockIComponent.Setup(m => m.GetComponentBasedOnId(id)).Returns(componentDto);
 			// Act
@@ -129,8 +129,8 @@ namespace CodectUnitTests
 
 			// Assert
 			Assert.IsType<ComponentDTO>(result);
-			Assert.Equal(feature, result.Feature);
-			Assert.Equal(contactPoints, result.ContactPoints);
+			Assert.Equal(feature, result.feature);
+			Assert.Equal(contactPoints, result.contactPoints);
 		}
 
 		[Fact]

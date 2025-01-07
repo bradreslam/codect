@@ -21,7 +21,7 @@ namespace DAL
 				c => c.ToList()                                            // Cloning logic
 			);
 
-			// Configure ContactPoints as a comma-separated string with a ValueComparer
+			// Configure contactPoints as a comma-separated string with a ValueComparer
 			modelBuilder.Entity<Component>()
 				.Property(c => c.ContactPoints)
 				.HasConversion(

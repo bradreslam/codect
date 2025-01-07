@@ -13,7 +13,7 @@
 			{
 				return feature();
 			}
-			throw new Exception($"Feature {name} was not found.");
+			throw new Exception($"feature {name} was not found.");
 		}
 
 		public List<string> GetKeyList()

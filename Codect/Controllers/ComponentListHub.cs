@@ -35,13 +35,13 @@ namespace Codect.Controllers
 				List<ContactPoint> contactPoints = new();
 				ContactPointDictionary cpd = new();
 
-				foreach (string contactPoint in componentDto.ContactPoints)
+				foreach (string contactPoint in componentDto.contactPoints)
 				{
 					contactPoints.Add(cpd.GetContactPoint(contactPoint));
 				}
 
 				SpriteFactory sf = new();
-				SvgDocument svgDocument = sf.CreateSprite(contactPoints, componentDto.Feature, false);
+				SvgDocument svgDocument = sf.CreateSprite(contactPoints, componentDto.feature, false);
 
 				string returnSprite = svgDocument.GetXML();
 				await Clients.All.SendAsync("ReceiveComponentImage", id, returnSprite);
@@ -59,22 +59,22 @@ namespace Codect.Controllers
 
 			Dictionary<string, string> componentInfo;
 
-			if (componentDto.Feature != "")
+			if (componentDto.feature != "")
 			{
 				FeatureDictionary fd = new();
-				FeatureModel component = fd.GetFeatureModel(componentDto.Feature);
+				FeatureModel component = fd.GetFeatureModel(componentDto.feature);
 				componentInfo = new()
 				{
-					{ "endPoints", string.Join(",", componentDto.ContactPoints) },
+					{ "endPoints", string.Join(",", componentDto.contactPoints) },
 					{ "description", component.description },
-					{ "feature", componentDto.Feature }
+					{ "feature", componentDto.feature }
 				};
 			}
 			else
 			{
 				componentInfo = new()
 				{
-					{ "endPoints", string.Join(",", componentDto.ContactPoints) },
+					{ "endPoints", string.Join(",", componentDto.contactPoints) },
 					{ "description", null },
 					{ "feature", "None" }
 				};

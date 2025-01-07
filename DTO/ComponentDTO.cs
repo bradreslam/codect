@@ -3,7 +3,7 @@ namespace DTO
 {
 	public class ComponentDTO
 	{
-		public List<string> ContactPoints { get; set; }
-		public string Feature { get; set; }
+		public List<string> contactPoints { get; set; }
+		public string feature { get; set; }
 	}
 }

@@ -14,7 +14,7 @@ namespace BLL.Models
 		[MaxLength(4, ErrorMessage = "There can be no more than 4 contact points")]
 		[NoDuplicates]
 		public List<ContactPoint> ContactPoints { get; set; }
-		[AllowedValues(typeof(FeatureDictionary), ErrorMessage = "Feature has to exist in dictionary")]
+		[AllowedValues(typeof(FeatureDictionary), ErrorMessage = "feature has to exist in dictionary")]
 		public string Feature { get; set; }
 
 		public Component(List<ContactPoint> contactPoints, string feature)

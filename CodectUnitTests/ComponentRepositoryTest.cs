@@ -117,10 +117,10 @@ namespace CodectUnitTests
 
 			// Assert
 			Xunit.Assert.NotNull(result);
-			Xunit.Assert.Equal("RedLed", result.Feature);
-			Xunit.Assert.Equal(2, result.ContactPoints.Count);
-			Xunit.Assert.Contains("E", result.ContactPoints);
-			Xunit.Assert.Contains("N", result.ContactPoints);
+			Xunit.Assert.Equal("RedLed", result.feature);
+			Xunit.Assert.Equal(2, result.contactPoints.Count);
+			Xunit.Assert.Contains("E", result.contactPoints);
+			Xunit.Assert.Contains("N", result.contactPoints);
 		}
 
 		[Fact]

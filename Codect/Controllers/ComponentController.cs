@@ -23,13 +23,13 @@ namespace Codect.Controllers
 				List<ContactPoint> contactpoints = new();
 				ContactPointDictionary cpd = new();
 
-				foreach (string contactpoint in componentDto.ContactPoints)
+				foreach (string contactpoint in componentDto.contactPoints)
 				{
 					contactpoints.Add(cpd.GetContactPoint(contactpoint));
 				}
 
 				SpriteFactory sf = new();
-				SvgDocument svgDocument = sf.CreateSprite(contactpoints, componentDto.Feature, false);
+				SvgDocument svgDocument = sf.CreateSprite(contactpoints, componentDto.feature, false);
 
 				var returnSprite = svgDocument.GetXML();
 
@@ -56,15 +56,15 @@ namespace Codect.Controllers
 			ComponentManager cm = new(ComponentRepository);
 			ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
 
-			if (componentDto.Feature != "")
+			if (componentDto.feature != "")
 			{
 				FeatureDictionary fd = new();
-				FeatureModel component = fd.GetFeatureModel(componentDto.Feature);
+				FeatureModel component = fd.GetFeatureModel(componentDto.feature);
 				Dictionary<string, string> componentInfo = new()
 				{
-					{"endPoints",string.Join( ",", componentDto.ContactPoints)},
+					{"endPoints",string.Join( ",", componentDto.contactPoints)},
 					{"description", component.description},
-					{"feature",componentDto.Feature}
+					{"feature",componentDto.feature}
 				};
 				return componentInfo;
 			}
@@ -72,7 +72,7 @@ namespace Codect.Controllers
 			{
 				Dictionary<string, string> componentInfo = new()
 				{
-					{"endPoints",string.Join( ",", componentDto.ContactPoints)},
+					{"endPoints",string.Join( ",", componentDto.contactPoints)},
 					{"description", null},
 					{"feature", "None"}
 				};
@@ -93,7 +93,7 @@ namespace Codect.Controllers
 			string id;
 			try
 			{
-				id = cm.InsertComponentInDatabase(componenDTO.ContactPoints, componenDTO.Feature);
+				id = cm.InsertComponentInDatabase(componenDTO.contactPoints, componenDTO.feature);
 			}
 			catch (Exception ex)
 			{

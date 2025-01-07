@@ -21,7 +21,7 @@ namespace CodectUnitTests
 				new Component(contactPoints, invalidFeature);
 			});
 
-			Xunit.Assert.Equal("Feature has to exist in dictionary", exception.Message);
+			Xunit.Assert.Equal("feature has to exist in dictionary", exception.Message);
 		}
 
 		[Fact]

@@ -9,7 +9,6 @@ using DAL;
 using DTO;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
 
@@ -191,8 +190,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		string feature = "RedLed";
 		ComponentDTO componentDTO = new()
 		{
-			ContactPoints = contactPoints,
-			Feature = feature
+			contactPoints = contactPoints,
+			feature = feature
 		};
 
 		var jsonComponentDto = new StringContent(
@@ -230,8 +229,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		string feature = "Incorrect feature";
 		ComponentDTO componentDTO = new()
 		{
-			ContactPoints = contactPoints,
-			Feature = feature
+			contactPoints = contactPoints,
+			feature = feature
 		};
 
 		var jsonComponentDto = new StringContent(
@@ -249,7 +248,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
 		var error = await response.Content.ReadAsStringAsync();
-		error.Should().Contain("Feature has to exist in dictionary");
+		error.Should().Contain("feature has to exist in dictionary");
 
 		componentRepository.IdExistsInDatabase("1100Incorect feature").Should().Be(false);
 	}
@@ -270,8 +269,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		string feature = "RedLed";
 		ComponentDTO componentDTO = new()
 		{
-			ContactPoints = contactPoints,
-			Feature = feature
+			contactPoints = contactPoints,
+			feature = feature
 		};
 
 		var jsonComponentDto = new StringContent(
@@ -306,8 +305,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		string feature = "RedLed";
 		ComponentDTO componentDTO = new()
 		{
-			ContactPoints = contactPoints,
-			Feature = feature
+			contactPoints = contactPoints,
+			feature = feature
 		};
 
 		var jsonComponentDto = new StringContent(
@@ -343,8 +342,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		string feature = "RedLed";
 		ComponentDTO componentDTO = new()
 		{
-			ContactPoints = contactPoints,
-			Feature = feature
+			contactPoints = contactPoints,
+			feature = feature
 		};
 
 		var jsonComponentDto = new StringContent(
