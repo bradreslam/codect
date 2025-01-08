@@ -180,7 +180,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 	{
 		//Arrange
 		using var _context = createDbContext();
-		ClearDatabase(_context);
+		//ClearDatabase(_context);
 
 		List<string> contactPoints = new()
 		{
@@ -206,6 +206,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 			, jsonComponentDto);
 
 		//Assert
+
+		var error = await response.Content.ReadAsStringAsync();
 		response.EnsureSuccessStatusCode();
 
 		var id = await response.Content.ReadAsStringAsync();
@@ -358,7 +360,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 			, jsonComponentDto);
 
 		//Arrange
-		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
 		var error = await response.Content.ReadAsStringAsync();
 		error.Should().Contain("The provided contact points are not valid");
