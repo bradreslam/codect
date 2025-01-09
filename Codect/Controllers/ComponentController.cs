@@ -37,7 +37,10 @@ namespace Codect.Controllers
 			}
 			catch (Exception ex)
 			{
-				return NotFound(ex);
+				return NotFound(new
+				{
+					message = ex.Message
+				}); ;
 			}
 		}
 
@@ -53,30 +56,41 @@ namespace Codect.Controllers
 		[Route("components/{id}")]
 		public Dictionary<string, string> GetComponentInfo(string id)
 		{
-			ComponentManager cm = new(ComponentRepository);
-			ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
+			try
+			{
+				ComponentManager cm = new(ComponentRepository);
+				ComponentDTO componentDto = cm.GetComponentBasedOnId(id);
 
-			if (componentDto.feature != "")
-			{
-				FeatureDictionary fd = new();
-				FeatureModel component = fd.GetFeatureModel(componentDto.feature);
-				Dictionary<string, string> componentInfo = new()
+				if (componentDto.feature != "")
 				{
-					{"endPoints",string.Join( ",", componentDto.contactPoints)},
-					{"description", component.description},
-					{"feature",componentDto.feature}
-				};
-				return componentInfo;
+					FeatureDictionary fd = new();
+					FeatureModel component = fd.GetFeatureModel(componentDto.feature);
+					Dictionary<string, string> componentInfo = new()
+					{
+						{ "endPoints", string.Join(",", componentDto.contactPoints) },
+						{ "description", component.description },
+						{ "feature", componentDto.feature }
+					};
+					return componentInfo;
+				}
+				else
+				{
+					Dictionary<string, string> componentInfo = new()
+					{
+						{ "endPoints", string.Join(",", componentDto.contactPoints) },
+						{ "description", null },
+						{ "feature", "None" }
+					};
+					return componentInfo;
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				Dictionary<string, string> componentInfo = new()
+				return new Dictionary<string, string>
 				{
-					{"endPoints",string.Join( ",", componentDto.contactPoints)},
-					{"description", null},
-					{"feature", "None"}
+					{ "error", "An error occurred while processing the request." },
+					{ "message", ex.Message }
 				};
-				return componentInfo;
 			}
 		}
 

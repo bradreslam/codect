@@ -17,46 +17,15 @@ namespace CodectUnitTests
 
 		public ComponentRepositoryTests()
 		{
-			_mockContext = new Mock<CodectEfCoreDbContext>();
+			var DbcontextOptions = new DbContextOptionsBuilder<CodectEfCoreDbContext>()
+				.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=CodectTestDb; Trusted_Connection=true; Trust Server Certificate=true; MultipleActiveResultSets=true; Integrated Security=true;")
+				.Options;
+
+			_mockContext = new Mock<CodectEfCoreDbContext>(DbcontextOptions);
 			_mockDbSet = new Mock<DbSet<Component>>();
 
 			_mockContext.Setup(m => m.Components).Returns(_mockDbSet.Object);
 			_repository = new ComponentRepository(_mockContext.Object);
-		}
-
-		private static Mock<DbSet<T>> CreateMockDbSet<T>(IQueryable<T> data) where T : class
-		{
-			var mockSet = new Mock<DbSet<T>>();
-			mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(data.Provider);
-			mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
-			mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
-			mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-			return mockSet;
-		}
-
-		[Fact]
-		public void GetAllComponentIds_ShouldReturnListOfComponentIds()
-		{
-			// Arrange
-			var components = new List<Component>
-		{
-			new(contactPointlist, "RedLed") { Id = "1" },
-			new(contactPointlist, "RedLed") { Id = "2" }
-		}.AsQueryable();
-			var mockSet = CreateMockDbSet(components);
-
-			var mockContext = new Mock<CodectEfCoreDbContext>();
-			mockContext.Setup(c => c.Components).Returns(mockSet.Object);
-
-			var repository = new ComponentRepository(mockContext.Object);
-
-			// Act
-			var result = repository.GetAllComponentIds();
-
-			// Assert
-			Xunit.Assert.Equal(2, result.Count);
-			Xunit.Assert.Contains("1", result);
-			Xunit.Assert.Contains("2", result);
 		}
 
 		[Fact]

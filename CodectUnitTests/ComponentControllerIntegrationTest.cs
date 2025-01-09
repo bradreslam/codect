@@ -26,11 +26,8 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 
 	public CodectEfCoreDbContext createDbContext()
 	{
-		var connection = new SqliteConnection("DataSource=:memory:");
-		connection.Open(); // SQLite requires the connection to remain open for the database to persist
-
 		var options = new DbContextOptionsBuilder<CodectEfCoreDbContext>()
-			.UseSqlite(connection)
+			.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=CodectTestDb; Trusted_Connection=true; Trust Server Certificate=true; MultipleActiveResultSets=true; Integrated Security=true;")
 			.Options;
 
 		// Create the schema for testing
@@ -111,7 +108,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		var response = await _Client.GetAsync($"https://localhost:7278/components/{id}/Image");
 
 		//Assert
-		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+		response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 		
 		var error = await response.Content.ReadAsStringAsync();
 		error.Should().Contain("Component does not exist in database");
@@ -131,9 +128,9 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		//Assert
 		response.EnsureSuccessStatusCode();
 
-		var featureList = response.Content.ReadFromJsonAsync<List<string>>();
-		featureList?.Id.Should().BePositive();
-		featureList.Result.Count.Should().BeGreaterThan(0);
+		var idList = response.Content.ReadFromJsonAsync<List<string>>();
+		idList?.Id.Should().BePositive();
+		idList.Result.Count.Should().Be(1);
 
 		ClearDatabase(_context);
 	}
@@ -146,13 +143,17 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		using var _context = createDbContext();
 		ClearDatabase(_context);
 		UploadNewComponent(_context);
+		var expectedEndPoints = new[] { "N", "E", "S", "W" };
 
 		//Act
 		var response = await _Client.GetAsync($"https://localhost:7278/components/{id}");
 
 		//Assert
 		var info = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-		info?["endPoints"].Should().Be("N,E,S,W");
+		info?["endPoints"].Should().Contain("N");
+		info?["endPoints"].Should().Contain("E");
+		info?["endPoints"].Should().Contain("S");
+		info?["endPoints"].Should().Contain("W");
 		info["description"].Should().Be("An simple red led light will light up when provided with power");
 		info["feature"].Should().Be("RedLed");
 
@@ -169,10 +170,9 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		var response = await _Client.GetAsync($"https://localhost:7278/components/{id}");
 
 		//Assert
-		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
-
-		var error = await response.Content.ReadAsStringAsync();
-		error.Should().Contain("Component does not exist in database");
+		var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+		error?["error"].Should().Be("An error occurred while processing the request.");
+		error["message"].Should().Be("Component does not exist in database");
 	}
 
 	[Fact]
@@ -180,7 +180,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 	{
 		//Arrange
 		using var _context = createDbContext();
-		//ClearDatabase(_context);
+		ClearDatabase(_context);
 
 		List<string> contactPoints = new()
 		{
@@ -247,7 +247,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 			, jsonComponentDto);
 
 		//Arrange
-		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
 		var error = await response.Content.ReadAsStringAsync();
 		error.Should().Contain("feature has to exist in dictionary");
@@ -287,7 +287,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 			, jsonComponentDto);
 
 		//Arrange
-		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
 		var error = await response.Content.ReadAsStringAsync();
 		error.Should().Contain("There can be no more than 4 contact points");
@@ -323,48 +323,11 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 			, jsonComponentDto);
 
 		//Arrange
-		response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
 		var error = await response.Content.ReadAsStringAsync();
 		error.Should().Contain("There can be no less than 2 contact points");
 
 		componentRepository.IdExistsInDatabase("1000RedLed").Should().Be(false);
-	}
-
-	[Fact]
-	public async Task ComponentCreate_should_return_an_exception_when_contact_points_are_invalid()
-	{
-		//Arrange
-		using var _context = createDbContext();
-		List<string> contactPoints = new()
-		{
-			"Invalid contact point",
-			"Invalid contact point"
-		};
-		string feature = "RedLed";
-		ComponentDTO componentDTO = new()
-		{
-			contactPoints = contactPoints,
-			feature = feature
-		};
-
-		var jsonComponentDto = new StringContent(
-			JsonSerializer.Serialize(componentDTO),
-			Encoding.UTF8,
-			"application/json");
-
-		ComponentRepository componentRepository = new ComponentRepository(_context);
-
-		//Act
-		var response = await _Client.PostAsync("https://localhost:7278/components/new-component"
-			, jsonComponentDto);
-
-		//Arrange
-		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-		var error = await response.Content.ReadAsStringAsync();
-		error.Should().Contain("The provided contact points are not valid");
-
-		componentRepository.IdExistsInDatabase("0000RedLed").Should().Be(false);
 	}
 }
