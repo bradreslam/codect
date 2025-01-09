@@ -95,7 +95,7 @@ namespace Codect.Controllers
 		}
 
 		[HttpPost]
-		[Route("components/new-component")]
+		[Route("components")]
 		public IActionResult Post([FromBody] ComponentDTO componenDTO)
 		{
 			if (componenDTO == null)

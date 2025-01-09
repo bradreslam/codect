@@ -202,7 +202,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		ComponentRepository componentRepository = new ComponentRepository(_context);
 
 		//Act
-		var response = await _Client.PostAsync("https://localhost:7278/components/new-component"
+		var response = await _Client.PostAsync("https://localhost:7278/components"
 			, jsonComponentDto);
 
 		//Assert
@@ -243,7 +243,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		ComponentRepository componentRepository = new ComponentRepository(_context);
 
 		//Act
-		var response = await _Client.PostAsync("https://localhost:7278/components/new-component"
+		var response = await _Client.PostAsync("https://localhost:7278/components"
 			, jsonComponentDto);
 
 		//Arrange
@@ -283,7 +283,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		ComponentRepository componentRepository = new ComponentRepository(_context);
 
 		//Act
-		var response = await _Client.PostAsync("https://localhost:7278/components/new-component"
+		var response = await _Client.PostAsync("https://localhost:7278/components"
 			, jsonComponentDto);
 
 		//Arrange
@@ -319,7 +319,7 @@ public class ComponentControllerIntegrationTest : IClassFixture<WebApplicationFa
 		ComponentRepository componentRepository = new ComponentRepository(_context);
 
 		//Act
-		var response = await _Client.PostAsync("https://localhost:7278/components/new-component"
+		var response = await _Client.PostAsync("https://localhost:7278/components"
 			, jsonComponentDto);
 
 		//Arrange
