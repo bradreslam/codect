@@ -11,7 +11,7 @@ namespace DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Feature",
+                name: "feature",
                 table: "Components",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -23,7 +23,7 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
-                name: "Feature",
+                name: "feature",
                 table: "Components",
                 type: "int",
                 nullable: false,

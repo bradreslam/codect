@@ -11,10 +11,6 @@ namespace DAL
 		{
 		}
 
-		// Parameterless constructor for testing
-		public CodectEfCoreDbContext()
-			: base(new DbContextOptionsBuilder<CodectEfCoreDbContext>().Options) { }
-
 		public virtual DbSet<Component> Components { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,7 +21,7 @@ namespace DAL
 				c => c.ToList()                                            // Cloning logic
 			);
 
-			// Configure ContactPoints as a comma-separated string with a ValueComparer
+			// Configure contactPoints as a comma-separated string with a ValueComparer
 			modelBuilder.Entity<Component>()
 				.Property(c => c.ContactPoints)
 				.HasConversion(

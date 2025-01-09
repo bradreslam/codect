@@ -63,8 +63,8 @@ namespace DAL
 				Component component = _context.Components.Find(id);
 				ComponentDTO componentDto = new()
 				{
-					Feature = component.Feature,
-					ContactPoints = component.ContactPoints
+					feature = component.Feature,
+					contactPoints = component.ContactPoints
 						.Select(contactPoint => new string(contactPoint.ToString()))
 						.ToList(),
 				};
@@ -73,7 +73,7 @@ namespace DAL
 			}
 			else
 			{
-				throw new DataException("Component does not exist in database");
+				throw new FileNotFoundException("Component does not exist in database");
 			}
 		}
 	}

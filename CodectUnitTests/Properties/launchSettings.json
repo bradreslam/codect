@@ -3,7 +3,7 @@
     "CodectUnitTests": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "test"
+        "ASPNETCORE_ENVIRONMENT": "Staging"
       }
     }
   }
