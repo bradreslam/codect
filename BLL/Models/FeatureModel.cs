@@ -1,10 +1,12 @@
 ﻿
+using Svg;
+
 namespace BLL.Models
 {
 	public class FeatureModel
 	{
 		public string description { get; set; }
-		public string offSprite { get; set; }
-		public string onSprite { get; set; }
+		public SvgDocument offSprite { get; set; }
+		public SvgDocument onSprite { get; set; }
 	}
 }
