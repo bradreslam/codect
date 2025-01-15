@@ -20,7 +20,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD="p7n&zAr.]WE$$=#5g;U9xH2"
+      - MSSQL_SA_PASSWORD="p7n&zAr.]WE$=#5g;U9xH2"
       - MSSQL_DB=CodectDb
     ports:
       - "1433:1433"
