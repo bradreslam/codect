@@ -39,10 +39,9 @@ namespace Codect.Controllers
 				}
 
 				SpriteFactory sf = new();
-				SvgDocument svgDocument = sf.CreateSprite(contactPoints, componentDto.feature, false);
+				string componentImage = sf.CreateSprite(contactPoints, componentDto.feature, false);
 
-				string returnSprite = svgDocument.GetXML();
-				await Clients.All.SendAsync("ReceiveComponentImage", id, returnSprite);
+				await Clients.All.SendAsync("ReceiveComponentImage", id, componentImage);
 			}
 			catch (Exception ex)
 			{
