@@ -8,7 +8,7 @@ services:
     image: ghcr.io/bradreslam/codect:app-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=database_codect_container;Database=CodectDb;User=sa;Password=p7n&zAr.]WE$=#5g;TrustServerCertificate=True;
+      - "ConnectionStrings__DefaultConnection=Server=database_codect_container;Database=CodectDb;User=sa;Password='p7n&zAr.]WE$=#5g;U9xH2';TrustServerCertificate=True;"
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -22,7 +22,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=p7n&zAr.]WE$=#5g
+      - MSSQL_SA_PASSWORD='p7n&zAr.]WE$=#5g;U9xH2'
     ports:
       - "1433:1433"
     networks:
