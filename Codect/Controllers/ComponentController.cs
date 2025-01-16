@@ -29,11 +29,9 @@ namespace Codect.Controllers
 				}
 
 				SpriteFactory sf = new();
-				SvgDocument svgDocument = sf.CreateSprite(contactpoints, componentDto.feature, false);
+				string componentImage = sf.CreateSprite(contactpoints, componentDto.feature, false);
 
-				var returnSprite = svgDocument.GetXML();
-
-				return Content(returnSprite, "image/svg+xml");
+				return Content(componentImage, "image/svg");
 			}
 			catch (Exception ex)
 			{
