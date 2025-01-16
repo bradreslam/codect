@@ -25,7 +25,7 @@ namespace CodectUnitTests
 			bool spriteType = false;
 
 			// Act
-			SvgDocument result = _spriteFactory.CreateSprite(endpoints, null, spriteType);
+			string result = _spriteFactory.CreateSprite(endpoints, null, spriteType);
 
 			// Assert
 			Xunit.Assert.NotNull(result);
