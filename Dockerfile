@@ -20,6 +20,7 @@ COPY ["DAL/DAL.csproj", "DAL/"]
 RUN dotnet restore "./Codect/Codect.csproj"
 COPY . .
 WORKDIR "/src/Codect"
+RUN apt-get update && apt-get install -y netcat
 RUN dotnet build "./Codect.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
