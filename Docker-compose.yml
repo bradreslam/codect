@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -8,6 +6,7 @@ services:
     image: ghcr.io/bradreslam/codect:app-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -15,13 +14,13 @@ services:
       - database_codect_container
     networks:
       - codect_network
+    entrypoint: ["sh", "-c", "while ! nc -z database_codect_container 1433; do sleep 1; done; dotnet YourApp.dll"]
 
   database_codect_container:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD="p7n&zAr.]WE$$=#5g;U9xH2"
-      - MSSQL_DB=CodectDb
+      - ACCEPT_EULA=${ACCEPT_EULA}
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     ports:
       - "1433:1433"
     networks:
